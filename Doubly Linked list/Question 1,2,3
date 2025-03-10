@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int data;
+    struct node *prev;
+    struct node *next;
+} doubly;
+void insertatbeg(doubly **head){
+    doubly *newhead=(doubly *)malloc(sizeof(doubly));
+    newhead->data=0;  
+    newhead->next=*head;
+    newhead->prev=NULL;
+    (*head)->prev=newhead;
+   
+    *head=newhead;
+}
+void insertatlast(doubly **head,int data){
+    doubly *temp=*head;
+    doubly *lastnode=(doubly *)malloc(sizeof(doubly));
+    lastnode->data=data;
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+    temp->next=lastnode;
+    lastnode->prev=temp;
+}
+void insertatloc(doubly **head,int key,int data){
+    doubly *temp=*head;
+    doubly*newnode=(doubly *)malloc(sizeof(doubly));
+    newnode->data=data;
+    for(int i=1;temp!=NULL&& i<key-1;i++){
+        temp=temp->next;
+    }
+    newnode->next=temp->next->next;
+    temp->next=newnode;
+    newnode->prev=temp;
+    
+}
+void deleteatst(doubly **head){
+    
+    *head=(*head)->next;
+    (*head)->prev=NULL;
+    
+    
+}
+void deleteatend(doubly **head){
+    doubly *temp=*head;
+    while (temp->next!=NULL){
+        temp=temp->next;
+
+    }
+    temp->prev->next=NULL;
+    free(temp);
+}
+void deleteatloc(doubly **head,int key){
+    doubly *temp=*head;
+    for(int i=1;i<key-1;i++){
+        temp=temp->next;
+    }
+    temp->next=temp->next->next;
+    
+}
+void printreverse(doubly **head){
+    doubly *temp=*head;
+    while(temp->next!=0){
+        temp=temp->next;
+    }
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        temp=temp->prev;
+    }
+}
+int main()
+{
+    doubly *head;
+
+    doubly *newnode, *newnode1, *newnode2, *newnode3, *newnode4, *newnode5, *temp;
+    newnode = (struct node *)malloc(sizeof(doubly));
+    head = (struct node *)malloc(sizeof(doubly));
+    newnode5 = (struct node *)malloc(sizeof(doubly));
+    newnode1 = (struct node *)malloc(sizeof(doubly));
+    newnode2 = (struct node *)malloc(sizeof(doubly));
+    newnode3 = (struct node *)malloc(sizeof(doubly));
+    newnode4 = (struct node *)malloc(sizeof(doubly));
+    head->data = 1;
+    head->next = newnode;
+    head->prev = NULL;
+    newnode->data = 2;
+    newnode->next = newnode1;
+    newnode->prev = head;
+    newnode1->data = 3;
+    newnode1->next = newnode2;
+    newnode1->prev = newnode;
+    newnode2->data = 3;
+    newnode2->next = newnode3;
+    newnode2->prev = newnode1;
+    newnode3->data = 4;
+    newnode3->next = newnode4;
+    newnode3->prev = newnode2;
+    newnode4->data = 5;
+    newnode4->next = newnode5;
+    newnode4->prev = newnode3;
+    newnode5->data = 6;
+    newnode5->next = NULL;
+    newnode5->prev = newnode4;
+    
+    insertatbeg(&head);
+    insertatlast(&head,7);
+    insertatloc(&head,4,8);
+    deleteatst(&head);
+    deleteatend(&head);
+    deleteatloc(&head,4);
+    printreverse(&head);
+    temp = head;
+    while (temp != NULL)
+    {
+        printf("%d", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+    return 0;
+}
