@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node
+{
+    int data;
+    struct Node *next;
+} Node;
+Node *createnode(int data)
+{
+    Node *newnode = (Node *)malloc(sizeof(Node));
+    newnode->data = data;
+    newnode->next = newnode;
+    return newnode;
+}
+void insertEnd(Node **head, int data)
+{
+    Node *newnode = createnode(data);
+    if (*head == NULL)
+    {
+        *head = newnode;
+    }
+    else
+    {
+        Node *temp = *head;
+        while (temp->next != *head)
+        {
+            temp = temp->next;
+        }
+        temp->next = newnode;
+        newnode->next = *head;
+    }
+}
+void traversing(Node **head)
+{
+    if (*head == NULL)
+    {
+        printf("list is empty");
+    }
+    else
+    {
+        Node *temp = *head;
+        while (temp->next != *head)
+        {
+            printf("%d", temp->data);
+            temp = temp->next;
+        }
+    }
+}
+void insertloc(Node **head,int key,int data){
+    Node *newnode=(Node*)malloc(sizeof(Node)),*temp=*head;
+    for(int i=1;i<key-1 && (temp->next)!=*head;i++){
+        temp=temp->next;
+    }
+    newnode->next=temp->next;
+    temp->next=newnode;
+    newnode->data=data;
+    
+}
+void deleteloc(Node **head,int key){
+    Node *temp=*head;
+    for(int i=1;i<key-1 && (temp->next)!=*head;i++){
+        temp=temp->next;
+    }
+    temp->next=temp->next->next;
+    // free(temp);
+}
+int main()
+{
+    Node *head = NULL;
+
+    insertEnd(&head, 1);
+    insertEnd(&head, 2);
+    insertEnd(&head, 3);
+    insertEnd(&head, 4);
+    insertloc(&head,2,8);
+    deleteloc(&head, 2);
+    printf("Circular Linked List: ");
+    traversing(&head);
+
+    return 0;
+}
