@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node{
+    int data;
+    struct Node *next;
+}Node;
+void merge(Node **head1,Node **head2,Node**head3){
+    Node *temp1=*head1, *temp2=*head2;
+    Node *tail=NULL;
+    *head3=NULL;
+    while(temp1!=NULL&&temp2!=NULL){
+        Node *newnode=(Node*)malloc(sizeof(Node));
+        if(temp1->data<temp2->data){
+            newnode->data=temp1->data;
+           
+            temp1 = temp1->next;
+        }
+        else{
+            newnode->data=temp2->data;
+         
+            temp2 = temp2->next;
+        }
+        if (*head3 == NULL) {
+            *head3 = newnode;
+            tail = *head3; 
+        } else {
+            tail->next = newnode;
+            tail = newnode;        
+        }
+    }      
+    
+    
+        while(temp1!=NULL){
+            Node *newnode=(Node*)malloc(sizeof(Node));
+            newnode->data=temp1->data;
+           
+            newnode->next = NULL;
+            tail->next = newnode;  
+            tail = newnode;    
+            temp1 = temp1->next;
+        }
+        while(temp2!=NULL){
+            Node *newnode=(Node*)malloc(sizeof(Node));
+            newnode->data=temp2->data;
+            
+            newnode->next = NULL;
+            tail->next = newnode;  
+            tail = newnode;    
+            temp2 = temp2->next;
+        }
+    }
+
+
+void printlist(Node **head){
+    Node *temp=*head;
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        temp=temp->next;
+    }
+}
+void append(Node **head,int newdata){
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    Node *last=*head;
+
+    newnode->data=newdata;
+    newnode->next=NULL;
+    if(*head==NULL){
+        *head=newnode;
+        return;
+    }
+    while(last->next!=NULL) {
+        last=last->next;
+    }
+    last->next=newnode;
+}
+int main(){
+    
+    Node *head3;
+    
+        Node *head1=NULL,*temp1;
+        int n;
+        printf("enter the no. of elements you want");
+        scanf("%d",&n);
+    
+        for (int i=0;i<n;i++){
+            printf("enter the data");
+            int m;
+            scanf("%d",&m);
+            append(&head1,m);
+            
+        }
+        Node *head2=NULL,*temp2;
+        
+        printf("enter the no. of elements you want");
+        scanf("%d",&n);
+    
+        for (int i=0;i<n;i++){
+            printf("enter the data");
+            int m;
+            scanf("%d",&m);
+            append(&head2,m);
+            
+        }
+        merge(&head1,&head2,&head3);
+        printlist(&head3);
+    return 0;
+   
+}
