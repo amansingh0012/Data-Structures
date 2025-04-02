@@ -1,0 +1,51 @@
+#include <stdio.h>
+#define SIZE 10
+
+int arr[SIZE], t1 = -1, t2 = SIZE;
+
+void push1(int x) {
+    if (t1 < t2 - 1) {
+        t1++;
+        arr[t1] = x;
+    }
+}
+
+void push2(int x) {
+    if (t1 < t2 - 1) {
+        t2--;
+        arr[t2] = x;
+    }
+}
+
+int pop1() {
+    if (t1 >= 0) {
+        int val = arr[t1];
+        t1--;
+        return val;
+    } else {
+        return -1; // Stack underflow
+    }
+}
+
+int pop2() {
+    if (t2 < SIZE) {
+        int val = arr[t2];
+        t2++;
+        return val;
+    } else {
+        return -1; // Stack underflow
+    }
+}
+
+int main() {
+    push1(10);
+    push2(20);
+    push1(30);
+    push2(40);
+    push1(50);
+    push2(60);
+    push1(70);
+    push2(80);
+    printf("%d %d\n", pop1(), pop2()); // Output: 10 20
+    return 0;
+}
