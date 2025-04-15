@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 5
+
+struct CircularQueue {
+    int arr[MAX];
+    int front;
+    int rear;
+};
+
+void initQueue(struct CircularQueue* q) {
+    q->front = -1;
+    q->rear = -1;
+}
+
+int isEmpty(struct CircularQueue* q) {
+    return q->front == -1;
+}
+
+int isFull(struct CircularQueue* q) {
+    return (q->rear + 1) % MAX == q->front;
+}
+
+void enqueue(struct CircularQueue* q, int value) {
+    if (isFull(q)) {
+        printf("Queue is full! Cannot enqueue %d\n", value);
+        return;
+    }
+
+    if (isEmpty(q)) {
+        q->front = 0;
+    }
+
+    q->rear = (q->rear + 1) % MAX;
+    q->arr[q->rear] = value;
+    printf("Enqueued %d\n", value);
+}
+
+int dequeue(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty! Cannot dequeue\n");
+        return -1;
+    }
+
+    int dequeuedValue = q->arr[q->front];
+    
+    if (q->front == q->rear) {
+        q->front = q->rear = -1;
+    } else {
+        q->front = (q->front + 1) % MAX;
+    }
+
+    printf("Dequeued %d\n", dequeuedValue);
+    return dequeuedValue;
+}
+
+int peek(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty! Cannot peek\n");
+        return -1;
+    }
+    return q->arr[q->front];
+}
+
+int size(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        return 0;
+    }
+    return (q->rear - q->front + 1 + MAX) % MAX;
+}
+
+void display(struct CircularQueue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+        return;
+    }
+
+    printf("Queue: ");
+    int i = q->front;
+    while (i != q->rear) {
+        printf("%d ", q->arr[i]);
+        i = (i + 1) % MAX;
+    }
+    printf("%d\n", q->arr[q->rear]);
+}
+
+int main() {
+    struct CircularQueue q;
+    initQueue(&q);
+
+    enqueue(&q, 10);
+    enqueue(&q, 20);
+    enqueue(&q, 30);
+    enqueue(&q, 40);
+    enqueue(&q, 50);
+
+    display(&q);
+
+    printf("Front element: %d\n", peek(&q));
+
+    dequeue(&q);
+    dequeue(&q);
+
+    display(&q);
+
+    enqueue(&q, 60);
+    enqueue(&q, 70);
+
+    display(&q);
+
+    dequeue(&q);
+    dequeue(&q);
+    dequeue(&q);
+    
+    display(&q);
+
+    return 0;
+}
