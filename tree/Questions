@@ -1,0 +1,169 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct treenode
+{
+    int data;
+    struct treenode *left;
+    struct treenode *right;
+} Tree;
+
+// Create a new tree node
+Tree *createnode(int val)
+{
+    Tree *newNode = (Tree *)malloc(sizeof(Tree));
+    newNode->data = val;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Insert node into BST
+Tree *insertNode(Tree *root, int value)
+{
+    if (root == NULL)
+    {
+        return createnode(value);
+    }
+
+    if (value < root->data)
+    {
+        root->left = insertNode(root->left, value);
+    }
+    else if (value > root->data)
+    {
+        root->right = insertNode(root->right, value);
+    }
+
+    return root;
+}
+
+// Inorder traversal (Left, Root, Right)
+void inorder(Tree *root)
+{
+    if (root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+// Preorder traversal (Root, Left, Right)
+void preorder(Tree *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+// Postorder traversal (Left, Right, Root)
+void postorder(Tree *root)
+{
+    if (root != NULL)
+    {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+// Find height of the tree
+int height(Tree *root)
+{
+    if (root == NULL)
+        return 0;
+
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+
+    int maxHeight;
+    if (leftHeight > rightHeight)
+    {
+        maxHeight = leftHeight;
+    }
+    else
+    {
+        maxHeight = rightHeight;
+    }
+
+    return maxHeight + 1;
+}
+// Depth of a Node
+int findDepth(Tree *root, int key)
+{
+    int depth = 0;
+
+    while (root != NULL)
+    {
+        if (key == root->data)
+        {
+            return depth;
+        }
+        else if (key < root->data)
+        {
+            root = root->left;
+        }
+        else
+        {
+            root = root->right;
+        }
+        depth++;
+    }
+
+    return -1;
+}
+// Function to count nodes
+void countNodes(Tree* root, int* total, int* leaf, int* internal) {
+    if (root == NULL) return;
+
+    (*total)++;
+
+    if (root->left == NULL && root->right == NULL)
+        (*leaf)++;
+    else
+        (*internal)++;
+
+    countNodes(root->left, total, leaf, internal);
+    countNodes(root->right, total, leaf, internal);
+}
+
+// Main function
+int main()
+{
+    Tree *root = createnode(5);
+
+    insertNode(root, 8);
+    insertNode(root, 6);
+    insertNode(root, 7);
+    insertNode(root, 4);
+    insertNode(root, 9);
+    insertNode(root, 3);
+
+    printf("Inorder Traversal: ");
+    inorder(root);
+    printf("\n");
+
+    printf("Preorder Traversal: ");
+    preorder(root);
+    printf("\n");
+
+    printf("Postorder Traversal: ");
+    postorder(root);
+    printf("\n");
+
+    int treeHeight = height(root);
+    printf("Height of the tree: %d\n", treeHeight);
+
+    int Depth = findDepth(root, 7);
+    printf("Depth of the key is%d", Depth);
+
+    int total = 0, leaf = 0, internal = 0;
+    countNodes(root, &total, &leaf, &internal);
+    printf("Total Nodes: %d\n", total);
+    printf("Leaf Nodes: %d\n", leaf);
+    printf("Internal Nodes: %d\n", internal);
+    return 0;
+}
